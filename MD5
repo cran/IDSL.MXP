@@ -1,0 +1,11 @@
+9cbbd855ff48ddbd21b0f8276309751a *DESCRIPTION
+12e061c76fbdd1fcd03e09b6624b800a *LICENSE
+67229c9ed9b3483c5ae0a9e02e5ebbe7 *NAMESPACE
+37d4573a98e591e26ca6b1b18a28c5ae *R/MXP_locate_regex.R
+f00c4d074a4b232a5d771f309ae098d1 *R/getPeakTable.R
+417201babb18cb1f14e50f6f532e279c *R/getSpectra.R
+ceb08ab3b34d03e0d8b7493a9279ee75 *R/peak2list.R
+70ce24bacff1e20911081004b8d4330e *man/MXP_locate_regex.Rd
+4024dc9e65f796fb94bf99b54a6010d5 *man/getPeakTable.Rd
+a1680346191f7ca87302748539484079 *man/getSpectra.Rd
+005a57d74c9f659cd216108f37d26b5f *man/peak2list.Rd
