@@ -1,5 +1,8 @@
 peak2list <- function(path = getwd(), MSfile = "") {
   MSfile <- paste0(path, "/", MSfile)
+  if(!file.exists(MSfile)){
+    MSfile <- substr(MSfile, 1, (nchar(MSfile) - 1))
+  }
   ##
   msFormat <- strsplit(MSfile, "[.]")[[1]]
   msFormat <- tolower(msFormat[length(msFormat)])

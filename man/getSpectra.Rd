@@ -14,7 +14,7 @@ getSpectra(xmlData, msFormat)
 a structured data of the mass spectrometry data created by the `read_xml` function.
 }
   \item{msFormat}{
-format extension of the mass spectrometry file c(mzML, mzXML)
+format extension of the mass spectrometry file c("mzML", "mzXML")
 }
 }
 \value{
