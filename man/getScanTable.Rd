@@ -1,13 +1,13 @@
-\name{getPeakTable}
-\alias{getPeakTable}
+\name{getScanTable}
+\alias{getScanTable}
 \title{
-getPeakTable
+getScanTable
 }
 \description{
-This function creates a peakTable for the chromatogram scans of the mass spectrometry data.
+This function creates a scanTable for the chromatogram scans of the mass spectrometry data.
 }
 \usage{
-getPeakTable(xmlData, msFormat)
+getScanTable(xmlData, msFormat)
 }
 \arguments{
   \item{xmlData}{
@@ -20,6 +20,9 @@ format extension of the mass spectrometry file c("mzML", "mzXML")
 \value{
 a dataframe of different scan properties including `seqNum`, `msLevel`, `polarity`, `peaksCount`, `totIonCurrent`, `retentionTime`, `basePeakMZ`, `basePeakIntensity`, `collisionEnergy`, `lowMZ`, `highMZ`, `precursorScanNum`, `precursorMZ`, `precursorCharge`, `precursorIntensity`, `injectionTime`, `filterString`, `scanType`, `centroided`, `isolationWindowTargetMZ`, `isolationWindowLowerOffset`, `isolationWindowUpperOffset`, `scanWindowLowerLimit`, and `scanWindowUpperLimit`. `scanType` is only provided for the mzXML data format.
 }
+\note{
+`retentionTime` column is presented in minute.
+}
 \examples{
 temp_wd <- tempdir()
 temp_wd_zip <- paste0(temp_wd,"/testfiles.zip")
@@ -28,5 +31,5 @@ download.file(
   destfile = temp_wd_zip)
 unzip(temp_wd_zip, exdir = temp_wd)
 xmlData <- xml2::read_xml(paste0(path = temp_wd, "/", MSfile = "003.mzML"))
-peakTable <- getPeakTable(xmlData, msFormat = "mzML")
+scanTable <- getScanTable(xmlData, msFormat = "mzML")
 }

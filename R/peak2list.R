@@ -1,6 +1,7 @@
 peak2list <- function(path = getwd(), MSfile = "") {
+  ##
   MSfile <- paste0(path, "/", MSfile)
-  if(!file.exists(MSfile)){
+  if(!file.exists(MSfile)) {
     MSfile <- substr(MSfile, 1, (nchar(MSfile) - 1))
   }
   ##
@@ -12,17 +13,20 @@ peak2list <- function(path = getwd(), MSfile = "") {
     ##
     xmlData <- read_xml(MSfile)
     ##
-    peakTable <- getPeakTable(xmlData, msFormat)
+    scanTable <- getScanTable(xmlData, msFormat)
     ##
     spectraList <- getSpectra(xmlData, msFormat)
     ##
-    p2l <- list(peakTable, spectraList)
+    p2l <- list(scanTable, spectraList)
     ##
-    names(p2l) <- c("peakTable", "spectraList")
+    names(p2l) <- c("scanTable", "spectraList")
     ##
-    return(p2l)
+  } else if ((msFormat == "cdf")) {
+    ##
+    p2l <- getNetCDF(MSfile)
     ##
   } else {
     stop("The MSfile is not consistent with the IDSL.MXP package!")
   }
+  return(p2l)
 }

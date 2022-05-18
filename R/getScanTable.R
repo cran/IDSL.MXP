@@ -1,5 +1,5 @@
-getPeakTable <- function(xmlData, msFormat) {
-  peakTable <- NA
+getScanTable <- function(xmlData, msFormat) {
+  scanTable <- NA
   if (tolower(msFormat) == "mzml") {
     spectrumNodes <- xml_find_all(xmlData, '//d1:spectrum')
     xmlNSspectrumNodes <- xml_ns(spectrumNodes)
@@ -35,7 +35,7 @@ getPeakTable <- function(xmlData, msFormat) {
     ############################################################################
     collisionEnergyNodes <- xml_find_all(spectrumNodes, 'd1:precursorList/d1:precursor/d1:activation/d1:cvParam[@name="collision energy"]', ns = xmlNSspectrumNodes, flatten = FALSE)
     ############################################################################
-    peakTable <- do.call(rbind, lapply(1:length(spectrumNodes), function(i) {
+    scanTable <- do.call(rbind, lapply(1:length(spectrumNodes), function(i) {
       S <- xml_attrs(spectrumNodes[[i]])
       ##
       seqNum <- as.numeric(S[1]) + 1
@@ -198,20 +198,20 @@ getPeakTable <- function(xmlData, msFormat) {
         scanWindowLowerLimit, scanWindowUpperLimit)
     }))
     ############################################################################
-    peakTable <- data.frame(peakTable)
-    colnames(peakTable) <- c("seqNum", "acquisitionNum", "msLevel", "polarity", "peaksCount", "totIonCurrent", "retentionTime",
+    scanTable <- data.frame(scanTable)
+    colnames(scanTable) <- c("seqNum", "acquisitionNum", "msLevel", "polarity", "peaksCount", "totIonCurrent", "retentionTime",
                              "basePeakMZ", "basePeakIntensity", "collisionEnergy", "lowMZ", "highMZ", "precursorScanNum", "precursorMZ",
                              "precursorCharge", "precursorIntensity", "injectionTime", "filterString", "spectrumId", "centroided",
                              "isolationWindowTargetMZ", "isolationWindowLowerOffset", "isolationWindowUpperOffset",
                              "scanWindowLowerLimit", "scanWindowUpperLimit")
     ##
-    peakTable$acquisitionNum <- as.numeric(peakTable$acquisitionNum)
+    scanTable$acquisitionNum <- as.numeric(scanTable$acquisitionNum)
     ############################################################################
   } else if (tolower(msFormat) == "mzxml") {
     ##
     scanNodes <- xml_find_all(xmlData, '//d1:scan')
     ##
-    peakTable <- do.call(rbind, lapply(1:length(scanNodes), function(i) {
+    scanTable <- do.call(rbind, lapply(1:length(scanNodes), function(i) {
       S <- xml_attrs(scanNodes[[i]])
       ##########################################################################
       nameS <- names(S)
@@ -401,38 +401,38 @@ getPeakTable <- function(xmlData, msFormat) {
         scanWindowLowerLimit, scanWindowUpperLimit)
     }))
     ##
-    peakTable <- data.frame(peakTable)
-    colnames(peakTable) <- c("seqNum", "msLevel", "polarity", "peaksCount", "totIonCurrent", "retentionTime", "basePeakMZ",
+    scanTable <- data.frame(scanTable)
+    colnames(scanTable) <- c("seqNum", "msLevel", "polarity", "peaksCount", "totIonCurrent", "retentionTime", "basePeakMZ",
                              "basePeakIntensity", "collisionEnergy", "lowMZ", "highMZ", "precursorScanNum", "precursorMZ",
                              "precursorCharge", "precursorIntensity", "injectionTime", "filterString", "scanType", "centroided",
                              "isolationWindowTargetMZ", "isolationWindowLowerOffset", "isolationWindowUpperOffset",
                              "scanWindowLowerLimit", "scanWindowUpperLimit")
     ##
-    peakTable$retentionTime <- as.numeric(gsub("[a-zA-Z]", "", peakTable$retentionTime, ignore.case = TRUE))/60
+    scanTable$retentionTime <- as.numeric(gsub("[a-zA-Z]", "", scanTable$retentionTime, ignore.case = TRUE))/60
     ##
   } else {
     stop("The MSfile is not consistent with the IDSL.MXP package!")
   }
   ##############################################################################
-  peakTable$seqNum <- as.numeric(peakTable$seqNum)
-  peakTable$msLevel <- as.numeric(peakTable$msLevel)
-  peakTable$polarity <- as.numeric(peakTable$polarity)
-  peakTable$peaksCount <- as.numeric(peakTable$peaksCount)
-  peakTable$totIonCurrent <- as.numeric(peakTable$totIonCurrent)
-  peakTable$retentionTime <- as.numeric(peakTable$retentionTime)
-  peakTable$basePeakMZ <- as.numeric(peakTable$basePeakMZ)
-  peakTable$basePeakIntensity <- as.numeric(peakTable$basePeakIntensity)
-  peakTable$lowMZ <- as.numeric(peakTable$lowMZ)
-  peakTable$highMZ <- as.numeric(peakTable$highMZ)
-  peakTable$precursorScanNum <- as.numeric(peakTable$precursorScanNum)
-  peakTable$precursorMZ <- as.numeric(peakTable$precursorMZ)
-  peakTable$precursorIntensity <- as.numeric(peakTable$precursorIntensity)
-  peakTable$injectionTime <- as.numeric(peakTable$injectionTime)
-  peakTable$isolationWindowTargetMZ <- as.numeric(peakTable$isolationWindowTargetMZ)
-  peakTable$isolationWindowLowerOffset <- as.numeric(peakTable$isolationWindowLowerOffset)
-  peakTable$isolationWindowUpperOffset <- as.numeric(peakTable$isolationWindowUpperOffset)
-  peakTable$scanWindowLowerLimit <- as.numeric(peakTable$scanWindowLowerLimit)
-  peakTable$scanWindowUpperLimit <- as.numeric(peakTable$scanWindowUpperLimit)
+  scanTable$seqNum <- as.numeric(scanTable$seqNum)
+  scanTable$msLevel <- as.numeric(scanTable$msLevel)
+  scanTable$polarity <- as.numeric(scanTable$polarity)
+  scanTable$peaksCount <- as.numeric(scanTable$peaksCount)
+  scanTable$totIonCurrent <- as.numeric(scanTable$totIonCurrent)
+  scanTable$retentionTime <- as.numeric(scanTable$retentionTime)
+  scanTable$basePeakMZ <- as.numeric(scanTable$basePeakMZ)
+  scanTable$basePeakIntensity <- as.numeric(scanTable$basePeakIntensity)
+  scanTable$lowMZ <- as.numeric(scanTable$lowMZ)
+  scanTable$highMZ <- as.numeric(scanTable$highMZ)
+  scanTable$precursorScanNum <- as.numeric(scanTable$precursorScanNum)
+  scanTable$precursorMZ <- as.numeric(scanTable$precursorMZ)
+  scanTable$precursorIntensity <- as.numeric(scanTable$precursorIntensity)
+  scanTable$injectionTime <- as.numeric(scanTable$injectionTime)
+  scanTable$isolationWindowTargetMZ <- as.numeric(scanTable$isolationWindowTargetMZ)
+  scanTable$isolationWindowLowerOffset <- as.numeric(scanTable$isolationWindowLowerOffset)
+  scanTable$isolationWindowUpperOffset <- as.numeric(scanTable$isolationWindowUpperOffset)
+  scanTable$scanWindowLowerLimit <- as.numeric(scanTable$scanWindowLowerLimit)
+  scanTable$scanWindowUpperLimit <- as.numeric(scanTable$scanWindowUpperLimit)
   ##############################################################################
-  return(peakTable)
+  return(scanTable)
 }
