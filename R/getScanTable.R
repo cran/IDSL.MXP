@@ -78,6 +78,7 @@ getScanTable <- function(xmlData, msFormat) {
       profileSpectrum <- xml_has_attr(profileSpectrumNodes[[i]], "value")
       ##
       if (length(centroidSpectrum) > 0) {
+        centroidSpectrum <- centroidSpectrum[1]
         if (centroidSpectrum) {
           centroided <- TRUE
         } else {
@@ -92,103 +93,136 @@ getScanTable <- function(xmlData, msFormat) {
       basePeakMZ <- xml_attr(basePeakMZNodes[[i]], "value")
       if (length(basePeakMZ) == 0) {
         basePeakMZ <- NA
+      } else {
+        basePeakMZ <- basePeakMZ[1]
       }
       ##
       basePeakIntensity <- xml_attr(basePeakIntensityNodes[[i]], "value")
       if (length(basePeakIntensity) == 0) {
         basePeakIntensity <- NA
+      } else {
+        basePeakIntensity <- basePeakIntensity[1]
       }
       ##
       totIonCurrent <- xml_attr(totIonCurrentNodes[[i]], "value")
       if (length(totIonCurrent) == 0) {
         totIonCurrent <- NA
+      } else {
+        totIonCurrent <- totIonCurrent[1]
       }
       ##
       msLevel <- xml_attr(msLevelNodes[[i]], "value")
       if (length(msLevel) == 0) {
         msLevel <- 0
+      } else {
+        msLevel <- msLevel[1]
       }
       ##
       lowMZ <- xml_attr(lowMZNodes[[i]], "value")
       if (length(lowMZ) == 0) {
         lowMZ <- NA
+      } else {
+        lowMZ <- lowMZ[1]
       }
       ##
       highMZ <- xml_attr(highMZNodes[[i]], "value")
       if (length(highMZ) == 0) {
         highMZ <- NA
+      } else {
+        highMZ <- highMZ[1]
       }
       ##########################################################################
       retentionTime <- xml_attr(retentionTimeNodes[[i]], "value")
       if (length(retentionTime) == 0) {
         retentionTime <- NA
+      } else {
+        retentionTime <- retentionTime[1]
       }
       ##
       filterString <- xml_attr(filterStringNodes[[i]], "value")
       if (length(filterString) == 0) {
         filterString <- NA
+      } else {
+        filterString <- filterString[1]
       }
       ##
       injectionTime <- xml_attr(injectionTimeNodes[[i]], "value")
       if (length(injectionTime) == 0) {
         injectionTime <- NA
+      } else {
+        injectionTime <- injectionTime[1]
       }
       ##########################################################################
       scanWindowLowerLimit <- xml_attr(scanWindowLowerLimitNodes[[i]], "value")
       if (length(scanWindowLowerLimit) == 0) {
         scanWindowLowerLimit <- NA
+      } else {
+        scanWindowLowerLimit <- scanWindowLowerLimit[1]
       }
       ##
       scanWindowUpperLimit <- xml_attr(scanWindowUpperLimitNodes[[i]], "value")
       if (length(scanWindowUpperLimit) == 0) {
         scanWindowUpperLimit <- NA
+      } else {
+        scanWindowUpperLimit <- scanWindowUpperLimit[1]
       }
       ##########################################################################
       isolationWindowTargetMZ <- xml_attr(isolationWindowTargetMZNodes[[i]], "value")
       if (length(isolationWindowTargetMZ) == 0) {
         isolationWindowTargetMZ <- NA
+      } else {
+        isolationWindowTargetMZ <- isolationWindowTargetMZ[1]
       }
       ##
       isolationWindowLowerOffset <- xml_attr(isolationWindowLowerOffsetNodes[[i]], "value")
       if (length(isolationWindowLowerOffset) == 0) {
         isolationWindowLowerOffset <- NA
+      } else {
+        isolationWindowLowerOffset <- isolationWindowLowerOffset[1]
       }
       ##
       isolationWindowUpperOffset <- xml_attr(isolationWindowUpperOffsetNodes[[i]], "value")
       if (length(isolationWindowUpperOffset) == 0) {
         isolationWindowUpperOffset <- NA
+      } else {
+        isolationWindowUpperOffset <- isolationWindowUpperOffset[1]
       }
       ##########################################################################
       precursorScanNum <- xml_attr(precursorScanNumNodes[[i]], "spectrumRef")
-      if (length(precursorScanNum) > 0) {
-        if (!is.na(precursorScanNum)) {
-          x_scan <- MXP_locate_regex(precursorScanNum, "scan=")
-          precursorScanNum <- substr(precursorScanNum, (x_scan[2] + 1), nchar(precursorScanNum))
-        } else {
-          precursorScanNum <- NA
-        }
-      } else {
+      if (length(precursorScanNum) == 0) {
         precursorScanNum <- NA
+      } else {
+        precursorScanNum <- precursorScanNum[1]
+        x_scan <- MXP_locate_regex(precursorScanNum, "scan=")
+        precursorScanNum <- substr(precursorScanNum, (x_scan[2] + 1), nchar(precursorScanNum))
       }
       ##
       precursorMZ <- xml_attr(precursorMZNodes[[i]], "value")
       if (length(precursorMZ) == 0) {
         precursorMZ <- NA
+      } else {
+        precursorMZ <- precursorMZ[1]
       }
       ##
       precursorCharge <- xml_attr(precursorChargeNodes[[i]], "value")
       if (length(precursorCharge) == 0) {
         precursorCharge <- NA
+      } else {
+        precursorCharge <- precursorCharge[1]
       }
       ##
       precursorIntensity <- xml_attr(precursorIntensityNodes[[i]], "value")
       if (length(precursorIntensity) == 0) {
         precursorIntensity <- NA
+      } else {
+        precursorIntensity <- precursorIntensity[1]
       }
-      ##########################################################################
+      ##
       collisionEnergy <- xml_attr(collisionEnergyNodes[[i]], "value")
       if (length(collisionEnergy) == 0) {
         collisionEnergy <- NA
+      } else {
+        collisionEnergy <- collisionEnergy[1]
       }
       ##########################################################################
       c(seqNum, acquisitionNum, msLevel, polarity, peaksCount, totIonCurrent, retentionTime,
@@ -211,10 +245,10 @@ getScanTable <- function(xmlData, msFormat) {
     ##
     scanNodes <- xml_find_all(xmlData, '//d1:scan')
     ##
-    scanTable <- do.call(rbind, lapply(1:length(scanNodes), function(i) {
+    scanNodeTable <- do.call(rbind, lapply(1:length(scanNodes), function(i) {
       S <- xml_attrs(scanNodes[[i]])
       ##########################################################################
-      nameS <- names(S)
+      nameS <- tolower(names(S))
       ##########################################################################
       x_num <- which(nameS == "num")
       if (length(x_num) > 0) {
@@ -223,14 +257,14 @@ getScanTable <- function(xmlData, msFormat) {
         seqNum <- 0
       }
       ##########################################################################
-      x_scanType <- which(nameS == "scanType")
+      x_scanType <- which(nameS == "scantype")
       if (length(x_scanType) > 0) {
         scanType <- S[x_scanType]
       } else {
         scanType <- NA
       }
       ##########################################################################
-      x_peaksCount <- which(nameS == "peaksCount")
+      x_peaksCount <- which(nameS == "peakscount")
       if (length(x_peaksCount) > 0) {
         peaksCount <- S[x_peaksCount]
       } else {
@@ -260,134 +294,92 @@ getScanTable <- function(xmlData, msFormat) {
       } else {
         centroided <- FALSE
       }
-      ##########################################################################      
-      x_basePeakMZ <- which(nameS == "basePeakMZ")
+      ##########################################################################
+      x_basePeakMZ <- which(nameS == "basepeakmz")
       if (length(x_basePeakMZ) > 0) {
         basePeakMZ <- S[x_basePeakMZ]
       } else {
         basePeakMZ <- NA
       }
       ##########################################################################
-      x_basePeakIntensity <- which(nameS == "basePeakIntensity")
+      x_basePeakIntensity <- which(nameS == "basepeakintensity")
       if (length(x_basePeakIntensity) > 0) {
         basePeakIntensity <- S[x_basePeakIntensity]
       } else {
         basePeakIntensity <- NA
       }
       ##########################################################################
-      x_totIonCurrent <- which(nameS == "totIonCurrent")
+      x_totIonCurrent <- which(nameS == "totioncurrent")
       if (length(x_totIonCurrent) > 0) {
         totIonCurrent <- S[x_totIonCurrent]
       } else {
         totIonCurrent <- 0
       }
       ##########################################################################
-      x_msLevel <- which(nameS == "msLevel")
+      x_msLevel <- which(nameS == "mslevel")
       if (length(x_msLevel) > 0) {
         msLevel <- S[x_msLevel]
       } else {
         msLevel <- 0
       }
       ##########################################################################
-      x_lowMZ <- which(nameS == "lowMZ")
+      x_lowMZ <- which(nameS == "lowmz")
       if (length(x_lowMZ) > 0) {
         lowMZ <- S[x_lowMZ]
       } else {
         lowMZ <- NA
       }
       ##########################################################################
-      x_highMZ <- which(nameS == "highMZ")
+      x_highMZ <- which(nameS == "highmz")
       if (length(x_highMZ) > 0) {
         highMZ <- S[x_highMZ]
       } else {
         highMZ <- NA
       }
       ##########################################################################
-      x_retentionTime <- which(nameS == "retentionTime")
+      x_retentionTime <- which(nameS == "retentiontime")
       if (length(x_retentionTime) > 0) {
         retentionTime <- S[x_retentionTime]
       } else {
         retentionTime <- NA
       }
       ##########################################################################
-      x_filterString <- which(nameS == "filterString")
+      x_filterString <- which(nameS == "filterstring")
       if (length(x_filterString) > 0) {
         filterString <- S[x_filterString]
       } else {
         filterString <- NA
       }
       ##########################################################################
-      x_injectionTime <- which(nameS == "injectionTime")
+      x_injectionTime <- which(nameS == "injectiontime")
       if (length(x_injectionTime) > 0) {
         injectionTime <- S[x_injectionTime]
       } else {
         injectionTime <- NA
       }
       ##########################################################################
-      x_scanWindowLowerLimit <- which(nameS == "scanWindowLowerLimit")
+      x_scanWindowLowerLimit <- which(nameS == "scanwindowLowerlimit")
       if (length(x_scanWindowLowerLimit) > 0) {
         scanWindowLowerLimit <- S[x_scanWindowLowerLimit]
       } else {
         scanWindowLowerLimit <- NA
       }
       ##########################################################################
-      x_scanWindowUpperLimit <- which(nameS == "scanWindowUpperLimit")
+      x_scanWindowUpperLimit <- which(nameS == "scanwindowUpperlimit")
       if (length(x_scanWindowUpperLimit) > 0) {
         scanWindowUpperLimit <- S[x_scanWindowUpperLimit]
       } else {
         scanWindowUpperLimit <- NA
       }
       ##########################################################################
-      x_isolationWindowTargetMZ <- which(nameS == "isolationWindowTargetMZ")
+      x_isolationWindowTargetMZ <- which(nameS == "isolationwindowtargetmz")
       if (length(x_isolationWindowTargetMZ) > 0) {
         isolationWindowTargetMZ <- S[x_isolationWindowTargetMZ]
       } else {
         isolationWindowTargetMZ <- NA
       }
       ##########################################################################
-      x_isolationWindowLowerOffset <- which(nameS == "isolationWindowLowerOffset")
-      if (length(x_isolationWindowLowerOffset) > 0) {
-        isolationWindowLowerOffset <- S[x_isolationWindowLowerOffset]
-      } else {
-        isolationWindowLowerOffset <- NA
-      }
-      ##########################################################################
-      x_isolationWindowUpperOffset <- which(nameS == "isolationWindowUpperOffset")
-      if (length(x_isolationWindowUpperOffset) > 0) {
-        isolationWindowUpperOffset <- S[x_isolationWindowUpperOffset]
-      } else {
-        isolationWindowUpperOffset <- NA
-      }
-      ##########################################################################
-      x_precursorScanNum <- which(nameS == "precursorScanNum")
-      if (length(x_precursorScanNum) > 0) {
-        precursorScanNum <- S[x_precursorScanNum]
-      } else {
-        precursorScanNum <- NA
-      }
-      ##########################################################################
-      x_precursorMZ <- which(nameS == "precursorMZ")
-      if (length(x_precursorMZ) > 0) {
-        precursorMZ <- S[x_precursorMZ]
-      } else {
-        precursorMZ <- NA
-      }
-      ##########################################################################
-      x_precursorCharge <- which(nameS == "precursorCharge")
-      if (length(x_precursorCharge) > 0) {
-        precursorCharge <- S[x_precursorCharge]
-      } else {
-        precursorCharge <- NA
-      }
-      ##########################################################################
-      x_precursorIntensity <- which(nameS == "precursorIntensity")
-      if (length(x_precursorIntensity) > 0) {
-        precursorIntensity <- S[x_precursorIntensity]
-      } else {
-        precursorIntensity <- NA
-      }
-      ##########################################################################
-      x_collisionEnergy <- which(nameS == "collisionEnergy")
+      x_collisionEnergy <- which(nameS == "collisionenergy")
       if (length(x_collisionEnergy) > 0) {
         collisionEnergy <- S[x_collisionEnergy]
       } else {
@@ -395,18 +387,80 @@ getScanTable <- function(xmlData, msFormat) {
       }
       ##########################################################################
       c(seqNum, msLevel, polarity, peaksCount, totIonCurrent, retentionTime, basePeakMZ,
-        basePeakIntensity, collisionEnergy, lowMZ, highMZ, precursorScanNum, precursorMZ,
-        precursorCharge, precursorIntensity, injectionTime, filterString, scanType, centroided,
-        isolationWindowTargetMZ, isolationWindowLowerOffset, isolationWindowUpperOffset,
-        scanWindowLowerLimit, scanWindowUpperLimit)
+        basePeakIntensity, collisionEnergy, lowMZ, highMZ, injectionTime, filterString,
+        scanType, centroided, isolationWindowTargetMZ, scanWindowLowerLimit, scanWindowUpperLimit)
     }))
     ##
-    scanTable <- data.frame(scanTable)
-    colnames(scanTable) <- c("seqNum", "msLevel", "polarity", "peaksCount", "totIonCurrent", "retentionTime", "basePeakMZ",
-                             "basePeakIntensity", "collisionEnergy", "lowMZ", "highMZ", "precursorScanNum", "precursorMZ",
-                             "precursorCharge", "precursorIntensity", "injectionTime", "filterString", "scanType", "centroided",
-                             "isolationWindowTargetMZ", "isolationWindowLowerOffset", "isolationWindowUpperOffset",
-                             "scanWindowLowerLimit", "scanWindowUpperLimit")
+    scanNodeTable <- data.frame(scanNodeTable)
+    colnames(scanNodeTable) <- c("seqNum", "msLevel", "polarity", "peaksCount", "totIonCurrent", "retentionTime", "basePeakMZ",
+                                 "basePeakIntensity", "collisionEnergy", "lowMZ", "highMZ", "injectionTime", "filterString",
+                                 "scanType", "centroided", "isolationWindowTargetMZ", "scanWindowLowerLimit", "scanWindowUpperLimit")
+    ############################################################################
+    mslevel <- as.numeric(scanNodeTable$msLevel)
+    ##
+    precursorMatrix <- matrix(rep(NA, 7*length(mslevel)), ncol = 7)
+    ##
+    precursorNodes <- xml_find_all(xmlData, '//d1:precursorMZ', ns = xml_ns(xmlData), flatten = FALSE)
+    L_precursorNodes <- length(xml_attrs(precursorNodes))
+    if (L_precursorNodes == 0) {
+      precursorNodes <- xml_find_all(xmlData, '//d1:precursorMz', ns = xml_ns(xmlData), flatten = FALSE)
+      L_precursorNodes <- length(xml_attrs(precursorNodes))
+      if (L_precursorNodes == 0) {
+        precursorNodes <- xml_find_all(xmlData, '//d1:precursormz', ns = xml_ns(xmlData), flatten = FALSE)
+        L_precursorNodes <- length(xml_attrs(precursorNodes))
+      }
+    }
+    ############################################################################
+    if (L_precursorNodes > 0) {
+      counterNodes <- 1
+      counter <- 0
+      for (i in mslevel) {
+        counter <- counter + 1
+        if (i > 1) {
+          ##
+          precursorMatrix[counter, 1] <- xml_text(precursorNodes[[counterNodes]]) 
+          ######################################################################
+          precursorVec <- xml_attrs(precursorNodes[[counterNodes]])
+          ######################################################################
+          nameP <- tolower(names(precursorVec))
+          ######################################################################
+          x_precursorScanNum <- which(nameP == "precursorscannum")
+          if (length(x_precursorScanNum) > 0) {
+            precursorMatrix[counter, 2] <- precursorVec[x_precursorScanNum]
+          }
+          ######################################################################
+          x_precursorIntensity <- which(nameP == "precursorintensity")
+          if (length(x_precursorIntensity) > 0) {
+            precursorMatrix[counter, 3] <- precursorVec[x_precursorIntensity]
+          }
+          ######################################################################    
+          x_precursorCharge <- which(nameP == "precursorcharge")
+          if (length(x_precursorCharge) > 0) {
+            precursorMatrix[counter, 4] <- precursorVec[x_precursorCharge]
+          } 
+          ######################################################################
+          x_activationMethod <- which(nameP == "activationmethod")
+          if (length(x_activationMethod) > 0) {
+            precursorMatrix[counter, 5] <- precursorVec[x_activationMethod]
+          }
+          ######################################################################
+          x_windowWideness <- which(nameP == "windowwideness")
+          if (length(x_windowWideness) > 0) {
+            isolationWindowLowerOffset <- as.numeric(precursorVec[x_windowWideness])/2
+            ##
+            precursorMatrix[counter, 6] <- isolationWindowLowerOffset
+            precursorMatrix[counter, 7] <- isolationWindowLowerOffset
+          }
+          ######################################################################
+          counterNodes <- counterNodes + i - 1
+        }
+      }
+    }
+    ##
+    precursorMatrix <- data.frame(precursorMatrix)
+    colnames(precursorMatrix) <- c("precursorMZ", "precursorScanNum", "precursorIntensity", "precursorCharge", "activationMethod", "isolationWindowLowerOffset", "isolationWindowUpperOffset")
+    ##
+    scanTable <- cbind(scanNodeTable, precursorMatrix)
     ##
     scanTable$retentionTime <- as.numeric(gsub("[a-zA-Z]", "", scanTable$retentionTime, ignore.case = TRUE))/60
     ##
