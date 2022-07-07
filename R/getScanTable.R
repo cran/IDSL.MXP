@@ -192,9 +192,11 @@ getScanTable <- function(xmlData, msFormat) {
       if (length(precursorScanNum) == 0) {
         precursorScanNum <- NA
       } else {
-        precursorScanNum <- precursorScanNum[1]
-        x_scan <- MXP_locate_regex(precursorScanNum, "scan=")
-        precursorScanNum <- substr(precursorScanNum, (x_scan[2] + 1), nchar(precursorScanNum))
+        if (!is.na(precursorScanNum)) {
+          precursorScanNum <- precursorScanNum[1]
+          x_scan <- MXP_locate_regex(precursorScanNum, "scan=")
+          precursorScanNum <- substr(precursorScanNum, (x_scan[2] + 1), nchar(precursorScanNum))
+        }
       }
       ##
       precursorMZ <- xml_attr(precursorMZNodes[[i]], "value")
@@ -213,7 +215,11 @@ getScanTable <- function(xmlData, msFormat) {
       ##
       precursorIntensity <- xml_attr(precursorIntensityNodes[[i]], "value")
       if (length(precursorIntensity) == 0) {
-        precursorIntensity <- NA
+        if (is.na(precursorMZ)) {
+          precursorIntensity <- NA
+        } else {
+          precursorIntensity <- 0
+        }
       } else {
         precursorIntensity <- precursorIntensity[1]
       }
@@ -400,10 +406,10 @@ getScanTable <- function(xmlData, msFormat) {
     ##
     precursorMatrix <- matrix(rep(NA, 7*length(mslevel)), ncol = 7)
     ##
-    precursorNodes <- xml_find_all(xmlData, '//d1:precursorMZ', ns = xml_ns(xmlData), flatten = FALSE)
+    precursorNodes <- xml_find_all(xmlData, '//d1:precursorMz', ns = xml_ns(xmlData), flatten = FALSE)
     L_precursorNodes <- length(xml_attrs(precursorNodes))
     if (L_precursorNodes == 0) {
-      precursorNodes <- xml_find_all(xmlData, '//d1:precursorMz', ns = xml_ns(xmlData), flatten = FALSE)
+      precursorNodes <- xml_find_all(xmlData, '//d1:precursorMZ', ns = xml_ns(xmlData), flatten = FALSE)
       L_precursorNodes <- length(xml_attrs(precursorNodes))
       if (L_precursorNodes == 0) {
         precursorNodes <- xml_find_all(xmlData, '//d1:precursormz', ns = xml_ns(xmlData), flatten = FALSE)

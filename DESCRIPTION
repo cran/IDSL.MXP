@@ -2,7 +2,7 @@ Package: IDSL.MXP
 Type: Package
 Title: Parser for mzML, mzXML, and netCDF Files (Mass Spectrometry
         Data)
-Version: 1.4
+Version: 1.5
 Authors@R: c(
     person(family = "Fakouri-Baygi", given = "Sadjad", email = "sadjad.fakouri-baygi@mssm.edu",
     role = c("cre","aut"), comment = c(ORCID = "0000-0002-6864-6911")),
@@ -16,12 +16,12 @@ Author: Sadjad Fakouri-Baygi [cre, aut]
 Maintainer: Sadjad Fakouri-Baygi <sadjad.fakouri-baygi@mssm.edu>
 Description: A tiny parser to extract mass spectra data and metadata table of MS acquisition properties from mzML, mzXML and netCDF mass spectrometry files.
 License: MIT + file LICENSE
-URL: https://ipa.idsl.me/mxp, https://github.com/idslme/idsl.ipa
+URL: https://ipa.idsl.me/mxp, https://github.com/idslme/idsl.mxp
         https://colab.research.google.com/drive/1gXwwuI1zzDHykKfodLSQQt5rwTuFEMpD
-BugReports: https://github.com/idslme/idsl.ipa/issues
+BugReports: https://github.com/idslme/idsl.mxp/issues
 Encoding: UTF-8
 Archs: i386, x64
 NeedsCompilation: no
-Packaged: 2022-06-09 00:50:37 UTC; sfbaygi
+Packaged: 2022-07-07 19:20:30 UTC; sfbaygi
 Repository: CRAN
-Date/Publication: 2022-06-09 10:00:02 UTC
+Date/Publication: 2022-07-07 22:40:02 UTC

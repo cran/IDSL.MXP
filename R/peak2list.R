@@ -1,17 +1,17 @@
-peak2list <- function(path = getwd(), MSfile = "") {
+peak2list <- function(path = getwd(), MSfileName = "") {
   ##
-  MSfile <- paste0(path, "/", MSfile)
-  if (!file.exists(MSfile)) {
-    MSfile <- substr(MSfile, 1, (nchar(MSfile) - 1))
-  }
+  MSfileLocation <- paste0(path, "/", MSfileName)
+  MSfileLocation <- gsub("\\", "/", MSfileLocation, fixed = TRUE)
+  strMSfileLocation <- strsplit(MSfileLocation, "/")[[1]]
+  MSfileName <- strMSfileLocation[length(strMSfileLocation)]
+  MSfileLocation <- paste0(strMSfileLocation, collapse = "/")
   ##
-  msFormat <- strsplit(MSfile, "[.]")[[1]]
+  msFormat <- strsplit(MSfileName, "[.]")[[1]]
   msFormat <- tolower(msFormat[length(msFormat)])
-  msFormat <- gsub("/", "", msFormat)
   ##
   if ((msFormat == "mzml") | (msFormat == "mzxml")) {
     ##
-    xmlData <- read_xml(MSfile)
+    xmlData <- read_xml(MSfileLocation)
     ##
     scanTable <- getScanTable(xmlData, msFormat)
     ##
@@ -23,10 +23,10 @@ peak2list <- function(path = getwd(), MSfile = "") {
     ##
   } else if ((msFormat == "cdf")) {
     ##
-    p2l <- getNetCDF(MSfile)
+    p2l <- getNetCDF(MSfileLocation)
     ##
   } else {
-    stop("The MSfile is not consistent with the IDSL.MXP package!")
+    stop(paste0(MSfileName, " is not consistent with the IDSL.MXP package!"))
   }
   return(p2l)
 }
