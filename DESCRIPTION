@@ -2,7 +2,7 @@ Package: IDSL.MXP
 Type: Package
 Title: Parser for mzML, mzXML, and netCDF Files (Mass Spectrometry
         Data)
-Version: 1.5
+Version: 1.6
 Authors@R: c(
     person(family = "Fakouri-Baygi", given = "Sadjad", email = "sadjad.fakouri-baygi@mssm.edu",
     role = c("cre","aut"), comment = c(ORCID = "0000-0002-6864-6911")),
@@ -22,6 +22,6 @@ BugReports: https://github.com/idslme/idsl.mxp/issues
 Encoding: UTF-8
 Archs: i386, x64
 NeedsCompilation: no
-Packaged: 2022-07-07 19:20:30 UTC; sfbaygi
+Packaged: 2022-09-26 20:38:48 UTC; sfbaygi
 Repository: CRAN
-Date/Publication: 2022-07-07 22:40:02 UTC
+Date/Publication: 2022-09-27 07:10:02 UTC
